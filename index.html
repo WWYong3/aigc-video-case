@@ -6,6 +6,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AIGC应用案例 · AI前沿短视频全自动生成</title>
   <style>
+    @font-face {
+      font-family: 'BigShoulders';
+      src: url('./_shared/fonts/BigShoulders-Bold.ttf') format('truetype');
+      font-weight: 700; font-display: swap;
+    }
+    @font-face {
+      font-family: 'InstrumentSans';
+      src: url('./_shared/fonts/InstrumentSans-Regular.ttf') format('truetype');
+      font-weight: 400; font-display: swap;
+    }
+    @font-face {
+      font-family: 'InstrumentSans';
+      src: url('./_shared/fonts/InstrumentSans-Bold.ttf') format('truetype');
+      font-weight: 700; font-display: swap;
+    }
+    @font-face {
+      font-family: 'GeistMono';
+      src: url('./_shared/fonts/GeistMono-Regular.ttf') format('truetype');
+      font-weight: 400; font-display: swap;
+    }
+
     :root {
       --bg: #f7f8fc;
       --bg2: #ffffff;
@@ -17,121 +38,219 @@
       --accent-light: #eff6ff;
       --accent2-light: #fffbeb;
     }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
-      background: var(--bg); color: var(--ink);
-      font-family: 'Microsoft YaHei', 'Segoe UI', sans-serif;
-      font-size: 18px; line-height: 1.7; overflow-x: hidden;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'InstrumentSans', 'Microsoft YaHei', sans-serif;
+      font-size: 18px;
+      line-height: 1.7;
+      overflow-x: hidden;
     }
+
     .container { max-width: 1120px; margin: 0 auto; padding: 0 2rem; }
 
+    /* Hero */
     .hero {
       background: linear-gradient(135deg, #eff6ff 0%, #f7f8fc 50%, #fffbeb 100%);
-      padding: 5rem 0 4rem; text-align: center; border-bottom: 1px solid var(--rule);
+      padding: 5rem 0 4rem;
+      text-align: center;
+      border-bottom: 1px solid var(--rule);
     }
     .hero-tag {
-      display: inline-block; padding: 6px 20px; background: var(--accent);
-      color: #fff; border-radius: 100px; font-size: 0.8rem;
-      letter-spacing: 0.15em; margin-bottom: 1.8rem; font-weight: 700;
+      display: inline-block;
+      padding: 6px 20px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      margin-bottom: 1.8rem;
+      font-weight: 700;
     }
     .hero h1 {
-      font-size: 3.2rem; font-weight: 800; margin-bottom: 1rem;
-      line-height: 1.15; color: var(--ink);
+      font-family: 'BigShoulders', 'Microsoft YaHei', sans-serif;
+      font-size: 3.2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      line-height: 1.15;
+      color: var(--ink);
     }
     .hero h1 .highlight { color: var(--accent); }
-    .hero .subtitle { font-size: 1.25rem; color: var(--muted); max-width: 720px; margin: 0 auto 2.5rem; }
-    .hero-metrics { display: flex; justify-content: center; gap: 2.5rem; flex-wrap: wrap; }
-    .hero-metric {
-      text-align: center; background: var(--bg2); border: 1px solid var(--rule);
-      border-radius: 12px; padding: 1.2rem 1.8rem; min-width: 130px;
+    .hero .subtitle {
+      font-size: 1.25rem;
+      color: var(--muted);
+      max-width: 720px;
+      margin: 0 auto 2.5rem;
     }
-    .hero-metric .num { font-size: 2.5rem; font-weight: 800; color: var(--accent); line-height: 1; }
+    .hero-metrics {
+      display: flex; justify-content: center; gap: 2.5rem; flex-wrap: wrap;
+    }
+    .hero-metric {
+      text-align: center;
+      background: var(--bg2);
+      border: 1px solid var(--rule);
+      border-radius: 12px;
+      padding: 1.2rem 1.8rem;
+      min-width: 130px;
+    }
+    .hero-metric .num {
+      font-family: 'BigShoulders', sans-serif;
+      font-size: 2.5rem; font-weight: 700; color: var(--accent); line-height: 1;
+    }
     .hero-metric .num.gold { color: var(--accent2); }
     .hero-metric .label { font-size: 0.8rem; color: var(--muted); margin-top: 0.4rem; }
 
+    /* Section */
     section { padding: 3.5rem 0; border-bottom: 1px solid var(--rule); }
-    .section-num { font-size: 0.85rem; color: var(--accent); margin-bottom: 0.4rem; letter-spacing: 0.1em; font-weight: 700; font-family: 'Consolas', monospace; }
-    h2 { font-size: 2.2rem; font-weight: 800; margin-bottom: 1.5rem; line-height: 1.2; }
+    .section-num {
+      font-family: 'GeistMono', monospace;
+      font-size: 0.85rem; color: var(--accent);
+      margin-bottom: 0.4rem; letter-spacing: 0.1em; font-weight: 700;
+    }
+    h2 {
+      font-family: 'BigShoulders', 'Microsoft YaHei', sans-serif;
+      font-size: 2.2rem; font-weight: 700; margin-bottom: 1.5rem; line-height: 1.2;
+    }
     h3 { font-size: 1.25rem; font-weight: 700; color: var(--ink); margin: 1.5rem 0 0.8rem; }
     p { margin-bottom: 0.8rem; font-size: 1.05rem; }
     .muted { color: var(--muted); }
     mark.key { background: none; color: var(--accent); font-weight: 700; }
 
-    .tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
-    .tech-card { background: var(--bg2); border: 1px solid var(--rule); border-radius: 12px; padding: 1.5rem; border-top: 4px solid var(--accent); transition: box-shadow 0.3s; }
+    /* Tech Grid */
+    .tech-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem; margin: 1.5rem 0;
+    }
+    .tech-card {
+      background: var(--bg2); border: 1px solid var(--rule);
+      border-radius: 12px; padding: 1.5rem;
+      border-top: 4px solid var(--accent);
+      transition: box-shadow 0.3s;
+    }
     .tech-card:nth-child(even) { border-top-color: var(--accent2); }
     .tech-card:hover { box-shadow: 0 4px 20px rgba(37, 99, 235, 0.1); }
-    .tech-card .icon { font-size: 0.75rem; color: var(--accent2); margin-bottom: 0.5rem; letter-spacing: 0.1em; font-weight: 700; font-family: 'Consolas', monospace; }
+    .tech-card .icon {
+      font-family: 'GeistMono', monospace; font-size: 0.75rem;
+      color: var(--accent2); margin-bottom: 0.5rem; letter-spacing: 0.1em; font-weight: 700;
+    }
     .tech-card .name { font-weight: 700; font-size: 1.15rem; margin-bottom: 0.3rem; }
     .tech-card .desc { font-size: 0.9rem; color: var(--muted); line-height: 1.5; }
 
-    /* CSS Flowchart */
-    .flowchart { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.5rem; margin: 1.5rem 0; padding: 1.5rem; background: var(--bg2); border: 1px solid var(--rule); border-radius: 12px; }
-    .flow-node { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 0.6rem 1.2rem; border-radius: 8px; font-size: 0.9rem; font-weight: 600; min-width: 100px; text-align: center; }
-    .flow-node.blue { background: var(--accent-light); border: 2px solid var(--accent); color: var(--accent); }
-    .flow-node.gold { background: var(--accent2-light); border: 2px solid var(--accent2); color: var(--accent2); }
-    .flow-node.result { background: var(--accent); color: #fff; border: 2px solid var(--accent); }
-    .flow-node .sub { font-size: 0.75rem; font-weight: 400; color: var(--muted); }
-    .flow-node.gold .sub, .flow-node.blue .sub { color: var(--muted); }
-    .flow-arrow { font-size: 1.5rem; color: var(--muted); font-weight: 700; }
-    .flow-chart-caption { font-size: 0.85rem; color: var(--muted); text-align: center; margin-top: 0.5rem; }
+    /* Mermaid */
+    .diagram { margin: 1.5rem 0; text-align: center; overflow-x: auto; }
+    .diagram pre.mermaid {
+      background: var(--bg2); border: 1px solid var(--rule);
+      border-radius: 12px; padding: 1.5rem; display: inline-block; min-width: 100%;
+    }
+    .diagram figcaption { font-size: 0.85rem; color: var(--muted); margin-top: 0.5rem; }
 
+    /* Steps */
     .step-list { display: flex; flex-direction: column; gap: 1rem; margin: 1.5rem 0; }
-    .step-card { display: flex; gap: 1.5rem; background: var(--bg2); border: 1px solid var(--rule); border-radius: 12px; padding: 1.5rem; border-left: 5px solid var(--accent); }
+    .step-card {
+      display: flex; gap: 1.5rem; background: var(--bg2);
+      border: 1px solid var(--rule); border-radius: 12px;
+      padding: 1.5rem; border-left: 5px solid var(--accent);
+    }
     .step-card:nth-child(even) { border-left-color: var(--accent2); }
-    .step-num { font-size: 2.5rem; font-weight: 800; color: var(--accent); line-height: 1; min-width: 56px; }
+    .step-num {
+      font-family: 'BigShoulders', sans-serif;
+      font-size: 2.5rem; font-weight: 700; color: var(--accent);
+      line-height: 1; min-width: 56px;
+    }
     .step-card:nth-child(even) .step-num { color: var(--accent2); }
     .step-body h3 { margin-top: 0; color: var(--accent); }
     .step-card:nth-child(even) .step-body h3 { color: var(--accent2); }
-    .step-body .meta { font-size: 0.78rem; color: var(--muted); margin-bottom: 0.5rem; font-family: 'Consolas', monospace; }
+    .step-body .meta {
+      font-family: 'GeistMono', monospace; font-size: 0.78rem;
+      color: var(--muted); margin-bottom: 0.5rem;
+    }
     .step-body p { font-size: 1rem; }
 
-    .script-block { background: var(--bg2); border: 1px solid var(--rule); border-left: 5px solid var(--accent2); border-radius: 12px; padding: 1.5rem 2rem; margin: 1.5rem 0; font-size: 1.05rem; line-height: 2; }
-    .script-block .label { font-size: 0.75rem; color: var(--accent2); letter-spacing: 0.1em; margin-bottom: 0.8rem; font-weight: 700; font-family: 'Consolas', monospace; }
+    /* Script */
+    .script-block {
+      background: var(--bg2); border: 1px solid var(--rule);
+      border-left: 5px solid var(--accent2);
+      border-radius: 12px; padding: 1.5rem 2rem; margin: 1.5rem 0;
+      font-size: 1.05rem; line-height: 2; color: var(--ink);
+    }
+    .script-block .label {
+      font-family: 'GeistMono', monospace; font-size: 0.75rem;
+      color: var(--accent2); letter-spacing: 0.1em; margin-bottom: 0.8rem; font-weight: 700;
+    }
 
-    .video-wrapper { width: 100%; margin: 1.5rem 0; border-radius: 12px; overflow: hidden; border: 1px solid var(--rule); box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
+    /* Video */
+    .video-wrapper {
+      width: 100%; margin: 1.5rem 0; border-radius: 12px; overflow: hidden;
+      border: 1px solid var(--rule); box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    }
     .video-wrapper video { width: 100%; display: block; }
 
-    /* CSS Bar Chart */
-    .bar-chart { display: flex; flex-direction: column; gap: 0.8rem; margin: 1rem 0; }
-    .bar-row { display: flex; align-items: center; gap: 0.8rem; }
-    .bar-label { width: 100px; font-size: 0.85rem; color: var(--ink); font-weight: 600; text-align: right; flex-shrink: 0; }
-    .bar-track { flex: 1; height: 32px; background: var(--bg); border-radius: 6px; overflow: hidden; position: relative; }
-    .bar-fill { height: 100%; border-radius: 6px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; font-size: 0.8rem; color: #fff; font-weight: 700; transition: width 0.5s; }
-    .bar-fill.blue { background: var(--accent); }
-    .bar-fill.gold { background: var(--accent2); }
+    /* Charts */
+    .chart-figure { margin: 1.5rem 0; }
+    .chart-figure figcaption {
+      font-size: 0.95rem; font-weight: 700; color: var(--ink); margin-bottom: 0.75rem;
+    }
+    .chart-container { min-height: 350px; }
+    .chart-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 1.5rem 0;
+    }
 
-    /* CSS Pie */
-    .pie-wrap { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
-    .pie-legend { display: flex; flex-direction: column; gap: 0.5rem; }
-    .pie-legend-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; }
-    .pie-legend-dot { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
-
-    .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 1.5rem 0; }
-    .chart-card { background: var(--bg2); border: 1px solid var(--rule); border-radius: 12px; padding: 1.5rem; }
-    .chart-card h4 { font-size: 0.95rem; font-weight: 700; color: var(--ink); margin-bottom: 1rem; }
-
-    .table-wrap { overflow-x: auto; overflow-y: auto; max-height: 480px; border: 1px solid var(--rule); border-radius: 12px; margin: 1.5rem 0; }
+    /* Table */
+    .table-wrap {
+      overflow-x: auto; overflow-y: auto; max-height: 480px;
+      border: 1px solid var(--rule); border-radius: 12px; margin: 1.5rem 0;
+    }
     table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
-    th { background: var(--accent-light); color: var(--accent); font-weight: 700; padding: 0.7rem 1rem; text-align: left; border-bottom: 2px solid var(--accent); position: sticky; top: 0; font-size: 0.85rem; }
+    th {
+      background: var(--accent-light); color: var(--accent);
+      font-weight: 700; padding: 0.7rem 1rem; text-align: left;
+      border-bottom: 2px solid var(--accent); position: sticky; top: 0;
+      font-size: 0.85rem; letter-spacing: 0.03em;
+    }
     td { padding: 0.6rem 1rem; border-bottom: 1px solid var(--rule); }
     td.muted { color: var(--muted); }
     tr:hover td { background: var(--accent-light); }
 
+    /* Thoughts */
     .thoughts { display: flex; flex-direction: column; gap: 1rem; margin: 1.5rem 0; }
-    .thought-card { background: var(--bg2); border: 1px solid var(--rule); border-radius: 12px; padding: 1.5rem 2rem; border-left: 5px solid var(--accent); }
+    .thought-card {
+      background: var(--bg2); border: 1px solid var(--rule);
+      border-radius: 12px; padding: 1.5rem 2rem;
+      border-left: 5px solid var(--accent);
+    }
     .thought-card:nth-child(even) { border-left-color: var(--accent2); }
-    .thought-card h3 { margin-top: 0; display: flex; align-items: center; gap: 0.5rem; color: var(--accent); }
+    .thought-card h3 {
+      margin-top: 0; display: flex; align-items: center; gap: 0.5rem;
+      color: var(--accent);
+    }
     .thought-card:nth-child(even) h3 { color: var(--accent2); }
-    .thought-card h3::before { content: ''; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+    .thought-card h3::before {
+      content: ''; width: 10px; height: 10px; border-radius: 50%;
+      background: var(--accent); flex-shrink: 0;
+    }
     .thought-card:nth-child(even) h3::before { background: var(--accent2); }
+    .thought-card p { font-size: 1rem; }
 
-    .stats-row { display: flex; gap: 1rem; flex-wrap: wrap; margin: 1rem 0; }
-    .stat-pill { background: var(--accent-light); border: 1px solid var(--rule); border-radius: 100px; padding: 0.4rem 1.2rem; font-size: 0.9rem; color: var(--accent); font-weight: 600; }
+    /* Stats inline */
+    .stats-row {
+      display: flex; gap: 1rem; flex-wrap: wrap; margin: 1rem 0;
+    }
+    .stat-pill {
+      background: var(--accent-light); border: 1px solid var(--rule);
+      border-radius: 100px; padding: 0.4rem 1.2rem;
+      font-size: 0.9rem; color: var(--accent); font-weight: 600;
+    }
     .stat-pill.gold { background: var(--accent2-light); color: var(--accent2); }
 
+    /* Footer */
     footer { padding: 2.5rem 0; text-align: center; background: var(--bg2); }
-    footer .label { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.15em; margin-bottom: 0.8rem; font-family: 'Consolas', monospace; }
+    footer .label {
+      font-family: 'GeistMono', monospace; font-size: 0.75rem;
+      color: var(--muted); letter-spacing: 0.15em; margin-bottom: 0.8rem;
+    }
     footer .info { font-size: 0.9rem; color: var(--muted); line-height: 1.8; }
 
     @media (max-width: 768px) {
@@ -144,13 +263,12 @@
       .chart-grid { grid-template-columns: 1fr; }
       h2 { font-size: 1.6rem; }
       body { font-size: 16px; }
-      .flowchart { flex-direction: column; }
-      .flow-arrow { transform: rotate(90deg); }
     }
   </style>
 </head>
 <body>
 
+<!-- Hero -->
 <header class="hero">
   <div class="container">
     <span class="hero-tag">AIGC 应用案例</span>
@@ -165,6 +283,7 @@
   </div>
 </header>
 
+<!-- 1. 背景 -->
 <section>
   <div class="container">
     <div class="section-num">01 / BACKGROUND</div>
@@ -178,42 +297,78 @@
   </div>
 </section>
 
+<!-- 2. 技术架构 -->
 <section>
   <div class="container">
     <div class="section-num">02 / TECH STACK</div>
     <h2>技术架构</h2>
     <div class="tech-grid">
-      <div class="tech-card"><div class="icon">LLM</div><div class="name">DeepSeek</div><div class="desc">国产大模型，生成视频文案和搜索关键词</div></div>
-      <div class="tech-card"><div class="icon">TTS</div><div class="name">Azure TTS</div><div class="desc">微软语音合成，中文女声"晓晓"旁白</div></div>
-      <div class="tech-card"><div class="icon">STOCK</div><div class="name">Pexels API</div><div class="desc">免费高清视频素材库，按词检索1080p片段</div></div>
-      <div class="tech-card"><div class="icon">RENDER</div><div class="name">FFmpeg 7.1</div><div class="desc">视频拼接、字幕烧录、音频混流引擎</div></div>
-      <div class="tech-card"><div class="icon">ORCH</div><div class="name">MoneyPrinterTurbo</div><div class="desc">开源编排框架，串联以上四项服务</div></div>
+      <div class="tech-card">
+        <div class="icon">LLM</div>
+        <div class="name">DeepSeek</div>
+        <div class="desc">国产大模型，生成视频文案和搜索关键词</div>
+      </div>
+      <div class="tech-card">
+        <div class="icon">TTS</div>
+        <div class="name">Azure TTS</div>
+        <div class="desc">微软语音合成，中文女声"晓晓"旁白</div>
+      </div>
+      <div class="tech-card">
+        <div class="icon">STOCK</div>
+        <div class="name">Pexels API</div>
+        <div class="desc">免费高清视频素材库，按词检索1080p片段</div>
+      </div>
+      <div class="tech-card">
+        <div class="icon">RENDER</div>
+        <div class="name">FFmpeg 7.1</div>
+        <div class="desc">视频拼接、字幕烧录、音频混流引擎</div>
+      </div>
+      <div class="tech-card">
+        <div class="icon">ORCH</div>
+        <div class="name">MoneyPrinterTurbo</div>
+        <div class="desc">开源编排框架，串联以上四项服务</div>
+      </div>
     </div>
   </div>
 </section>
 
+<!-- 3. 全流程图 -->
 <section>
   <div class="container">
     <div class="section-num">03 / WORKFLOW</div>
     <h2>全流程图</h2>
     <p>五个阶段顺序执行，<mark class="key">全自动，无需人工干预</mark>：</p>
-    <div class="flowchart">
-      <div class="flow-node blue">主题输入<span class="sub">用户输入</span></div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-node gold">DeepSeek<span class="sub">文案生成</span></div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-node blue">Azure TTS<span class="sub">语音+字幕</span></div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-node gold">Pexels<span class="sub">检索+下载</span></div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-node blue">FFmpeg<span class="sub">拼接+合成</span></div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-node result">final.mp4<span class="sub" style="color:#ddd">1080p 成片</span></div>
-    </div>
-    <p class="flow-chart-caption">图1 · AI视频生成全流程架构</p>
+    <figure class="diagram">
+      <pre class="mermaid">
+flowchart LR
+    A["主题输入"] --> B["DeepSeek\n文案生成"]
+    B --> C["Azure TTS\n语音合成"]
+    B --> D["关键词提取\n5个搜索词"]
+    D --> E["Pexels API\n检索64个视频"]
+    E --> F["下载17段\n1080p素材"]
+    C --> G["SRT字幕\n自动生成"]
+    F --> H["FFmpeg\n17段→1段拼接"]
+    G --> I["最终合成\n视频+音频+字幕"]
+    H --> I
+    I --> J["final.mp4\n1080p 成片"]
+
+    style A fill:#eff6ff,stroke:#2563eb,color:#1a1f36
+    style B fill:#fff,stroke:#2563eb,color:#1a1f36
+    style C fill:#fffbeb,stroke:#f59e0b,color:#1a1f36
+    style D fill:#fff,stroke:#2563eb,color:#1a1f36
+    style E fill:#fffbeb,stroke:#f59e0b,color:#1a1f36
+    style F fill:#fff,stroke:#2563eb,color:#1a1f36
+    style G fill:#fffbeb,stroke:#f59e0b,color:#1a1f36
+    style H fill:#fff,stroke:#2563eb,color:#1a1f36
+    style I fill:#fffbeb,stroke:#f59e0b,color:#1a1f36
+    style J fill:#eff6ff,stroke:#2563eb,color:#2563eb
+      </pre>
+      <figcaption>图1 · AI视频生成全流程架构</figcaption>
+    </figure>
   </div>
 </section>
 
+<!-- 4. 关键步骤 -->
 <section>
   <div class="container">
     <div class="section-num">04 / KEY STEPS</div>
@@ -263,6 +418,7 @@
   </div>
 </section>
 
+<!-- 5. 文案 -->
 <section>
   <div class="container">
     <div class="section-num">05 / SCRIPT</div>
@@ -277,49 +433,26 @@
   </div>
 </section>
 
+<!-- 6. 数据 -->
 <section>
   <div class="container">
     <div class="section-num">06 / DATA</div>
     <h2>数据统计</h2>
     <div class="chart-grid">
-      <div class="chart-card">
-        <h4>图2 · 各阶段耗时（秒）</h4>
-        <div class="bar-chart">
-          <div class="bar-row"><div class="bar-label">文案生成</div><div class="bar-track"><div class="bar-fill blue" style="width:12%">139s</div></div></div>
-          <div class="bar-row"><div class="bar-label">语音合成</div><div class="bar-track"><div class="bar-fill gold" style="width:1%">9s</div></div></div>
-          <div class="bar-row"><div class="bar-label">素材检索</div><div class="bar-track"><div class="bar-fill blue" style="width:2%">21s</div></div></div>
-          <div class="bar-row"><div class="bar-label">素材下载</div><div class="bar-track"><div class="bar-fill gold" style="width:100%">1160s</div></div></div>
-          <div class="bar-row"><div class="bar-label">片段拼接</div><div class="bar-track"><div class="bar-fill blue" style="width:15%">180s</div></div></div>
-          <div class="bar-row"><div class="bar-label">最终合成</div><div class="bar-track"><div class="bar-fill gold" style="width:41%">470s</div></div></div>
-        </div>
-      </div>
-      <div class="chart-card">
-        <h4>图3 · Pexels 素材检索分布</h4>
-        <div class="pie-wrap">
-          <svg width="180" height="180" viewBox="0 0 200 200">
-            <circle cx="100" cy="100" r="80" fill="none" stroke="#eff6ff" stroke-width="40"/>
-            <circle cx="100" cy="100" r="80" fill="none" stroke="#2563eb" stroke-width="40" stroke-dasharray="90.5 502.7" transform="rotate(-90 100 100)"/>
-            <circle cx="100" cy="100" r="80" fill="none" stroke="#f59e0b" stroke-width="40" stroke-dasharray="100.5 502.7" stroke-dashoffset="-90.5" transform="rotate(-90 100 100)"/>
-            <circle cx="100" cy="100" r="80" fill="none" stroke="#2563eb" stroke-width="40" stroke-dasharray="75.4 502.7" stroke-dashoffset="-191" transform="rotate(-90 100 100)" opacity="0.7"/>
-            <circle cx="100" cy="100" r="80" fill="none" stroke="#f59e0b" stroke-width="40" stroke-dasharray="95.5 502.7" stroke-dashoffset="-266.4" transform="rotate(-90 100 100)" opacity="0.7"/>
-            <circle cx="100" cy="100" r="80" fill="none" stroke="#6b7390" stroke-width="40" stroke-dasharray="100.5 502.7" stroke-dashoffset="-361.9" transform="rotate(-90 100 100)"/>
-            <text x="100" y="95" text-anchor="middle" font-size="28" font-weight="bold" fill="#1a1f36">64</text>
-            <text x="100" y="115" text-anchor="middle" font-size="12" fill="#6b7390">个视频</text>
-          </svg>
-          <div class="pie-legend">
-            <div class="pie-legend-item"><div class="pie-legend-dot" style="background:#2563eb"></div>AI large model · 18</div>
-            <div class="pie-legend-item"><div class="pie-legend-dot" style="background:#f59e0b"></div>AI intelligent agent · 20</div>
-            <div class="pie-legend-item"><div class="pie-legend-dot" style="background:#2563eb;opacity:0.7"></div>AI future tech · 15</div>
-            <div class="pie-legend-item"><div class="pie-legend-dot" style="background:#f59e0b;opacity:0.7"></div>AI innovation · 19</div>
-            <div class="pie-legend-item"><div class="pie-legend-dot" style="background:#6b7390"></div>AI future · 20</div>
-          </div>
-        </div>
-      </div>
+      <figure class="chart-figure">
+        <figcaption>图2 · 各阶段耗时（秒）</figcaption>
+        <div id="chart-timeline" class="chart-container" style="width:100%;min-height:350px"></div>
+      </figure>
+      <figure class="chart-figure">
+        <figcaption>图3 · Pexels 素材检索分布</figcaption>
+        <div id="chart-materials" class="chart-container" style="width:100%;min-height:350px"></div>
+      </figure>
     </div>
     <p><mark class="key">素材下载是瓶颈</mark>（约19分钟），受网络带宽制约。文案+语音合计不到2.5分钟。</p>
   </div>
 </section>
 
+<!-- 7. 素材 -->
 <section>
   <div class="container">
     <div class="section-num">07 / MATERIALS</div>
@@ -327,7 +460,9 @@
     <p>17段 Pexels 高清素材，<mark class="key">全部 1920×1080 免费可商用</mark>：</p>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>#</th><th>搜索词</th><th>素材描述</th><th>时长</th><th>创作者</th></tr></thead>
+        <thead>
+          <tr><th>#</th><th>搜索词</th><th>素材描述</th><th>时长</th><th>创作者</th></tr>
+        </thead>
         <tbody>
           <tr><td>1</td><td>AI intelligent agent</td><td>儿童观看机器人跳舞</td><td>10s</td><td class="muted">Pavel Danilyuk</td></tr>
           <tr><td>2</td><td>AI future technology</td><td>行走中的机器人</td><td>8s</td><td class="muted">Kindel Media</td></tr>
@@ -352,6 +487,7 @@
   </div>
 </section>
 
+<!-- 8. 视频 -->
 <section>
   <div class="container">
     <div class="section-num">08 / FINAL VIDEO</div>
@@ -367,16 +503,32 @@
   </div>
 </section>
 
+<!-- 9. 思考 -->
 <section>
   <div class="container">
     <div class="section-num">09 / REFLECTIONS</div>
     <h2>思考与总结</h2>
     <div class="thoughts">
-      <div class="thought-card"><h3>内容生产边界被重新定义</h3><p>传统82秒科普视频需8个环节、多角色协作、周期以天计。本案例<mark class="key">34分钟全自动完成</mark>，边际成本趋近于零。</p></div>
-      <div class="thought-card"><h3>多模型协作是正确姿势</h3><p>单一模型无法覆盖文案→语音→视频→字幕全链路。<mark class="key">编排框架串联专业服务</mark>，各司其职，与"智能体协作"理念一致。</p></div>
-      <div class="thought-card"><h3>素材匹配度是当前短板</h3><p>17段素材有多个"机器人跳舞""下棋"重复场景，缺乏"大模型训练"等贴切画面。未来可用<mark class="key">文生视频模型直接生成匹配画面</mark>。</p></div>
-      <div class="thought-card"><h3>教育场景潜力巨大</h3><p>教师提供主题即可分钟级生成教学视频，配合PPT构建<mark class="key">"图文+视频+互动"完整教学资源包</mark>。</p></div>
-      <div class="thought-card"><h3>工具链仍需工程化打磨</h3><p>实践中遇到FFmpeg精简版缺功能、Pexels CDN超时等问题，<mark class="key">稳定性和环境适配仍有提升空间</mark>。</p></div>
+      <div class="thought-card">
+        <h3>内容生产边界被重新定义</h3>
+        <p>传统82秒科普视频需8个环节、多角色协作、周期以天计。本案例<mark class="key">34分钟全自动完成</mark>，边际成本趋近于零。</p>
+      </div>
+      <div class="thought-card">
+        <h3>多模型协作是正确姿势</h3>
+        <p>单一模型无法覆盖文案→语音→视频→字幕全链路。<mark class="key">编排框架串联专业服务</mark>，各司其职，与"智能体协作"理念一致。</p>
+      </div>
+      <div class="thought-card">
+        <h3>素材匹配度是当前短板</h3>
+        <p>17段素材有多个"机器人跳舞""下棋"重复场景，缺乏"大模型训练"等贴切画面。未来可用<mark class="key">文生视频模型直接生成匹配画面</mark>。</p>
+      </div>
+      <div class="thought-card">
+        <h3>教育场景潜力巨大</h3>
+        <p>教师提供主题即可分钟级生成教学视频，配合PPT构建<mark class="key">"图文+视频+互动"完整教学资源包</mark>。</p>
+      </div>
+      <div class="thought-card">
+        <h3>工具链仍需工程化打磨</h3>
+        <p>实践中遇到FFmpeg精简版缺功能、Pexels CDN超时等问题，<mark class="key">稳定性和环境适配仍有提升空间</mark>。</p>
+      </div>
     </div>
   </div>
 </section>
@@ -390,6 +542,11 @@
     </div>
   </div>
 </footer>
+
+<script src="./_shared/js/mermaid.min.js"></script>
+<script src="./_shared/js/echarts.min.js"></script>
+<script>mermaid.initialize({ startOnLoad: true, theme: 'base', securityLevel: 'loose' });</script>
+<script src="assets/charts.js"></script>
 
 </body>
 </html>
