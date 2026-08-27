@@ -6,6 +6,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AIGC应用案例 · AI前沿短视频全自动生成</title>
   <style>
+    @font-face {
+      font-family: 'BigShoulders';
+      src: url('./_shared/fonts/BigShoulders-Bold.ttf') format('truetype');
+      font-weight: 700; font-display: swap;
+    }
+    @font-face {
+      font-family: 'InstrumentSans';
+      src: url('./_shared/fonts/InstrumentSans-Regular.ttf') format('truetype');
+      font-weight: 400; font-display: swap;
+    }
+    @font-face {
+      font-family: 'InstrumentSans';
+      src: url('./_shared/fonts/InstrumentSans-Bold.ttf') format('truetype');
+      font-weight: 700; font-display: swap;
+    }
+    @font-face {
+      font-family: 'GeistMono';
+      src: url('./_shared/fonts/GeistMono-Regular.ttf') format('truetype');
+      font-weight: 400; font-display: swap;
+    }
+
     :root {
       --bg: #f7f8fc;
       --bg2: #ffffff;
@@ -23,7 +44,7 @@
     body {
       background: var(--bg);
       color: var(--ink);
-      font-family: 'Microsoft YaHei', 'Segoe UI', sans-serif;
+      font-family: 'InstrumentSans', 'Microsoft YaHei', sans-serif;
       font-size: 18px;
       line-height: 1.7;
       overflow-x: hidden;
@@ -50,7 +71,7 @@
       font-weight: 700;
     }
     .hero h1 {
-      font-family: 'Microsoft YaHei', 'Segoe UI', sans-serif;
+      font-family: 'BigShoulders', 'Microsoft YaHei', sans-serif;
       font-size: 3.2rem;
       font-weight: 700;
       margin-bottom: 1rem;
@@ -76,7 +97,7 @@
       min-width: 130px;
     }
     .hero-metric .num {
-      font-family: 'Microsoft YaHei', 'Segoe UI', sans-serif;
+      font-family: 'BigShoulders', sans-serif;
       font-size: 2.5rem; font-weight: 700; color: var(--accent); line-height: 1;
     }
     .hero-metric .num.gold { color: var(--accent2); }
@@ -85,12 +106,12 @@
     /* Section */
     section { padding: 3.5rem 0; border-bottom: 1px solid var(--rule); }
     .section-num {
-      font-family: 'Consolas', 'Courier New', monospace;
+      font-family: 'GeistMono', monospace;
       font-size: 0.85rem; color: var(--accent);
       margin-bottom: 0.4rem; letter-spacing: 0.1em; font-weight: 700;
     }
     h2 {
-      font-family: 'Microsoft YaHei', 'Segoe UI', sans-serif;
+      font-family: 'BigShoulders', 'Microsoft YaHei', sans-serif;
       font-size: 2.2rem; font-weight: 700; margin-bottom: 1.5rem; line-height: 1.2;
     }
     h3 { font-size: 1.25rem; font-weight: 700; color: var(--ink); margin: 1.5rem 0 0.8rem; }
@@ -112,7 +133,7 @@
     .tech-card:nth-child(even) { border-top-color: var(--accent2); }
     .tech-card:hover { box-shadow: 0 4px 20px rgba(37, 99, 235, 0.1); }
     .tech-card .icon {
-      font-family: 'Consolas', 'Courier New', monospace; font-size: 0.75rem;
+      font-family: 'GeistMono', monospace; font-size: 0.75rem;
       color: var(--accent2); margin-bottom: 0.5rem; letter-spacing: 0.1em; font-weight: 700;
     }
     .tech-card .name { font-weight: 700; font-size: 1.15rem; margin-bottom: 0.3rem; }
@@ -135,7 +156,7 @@
     }
     .step-card:nth-child(even) { border-left-color: var(--accent2); }
     .step-num {
-      font-family: 'Microsoft YaHei', 'Segoe UI', sans-serif;
+      font-family: 'BigShoulders', sans-serif;
       font-size: 2.5rem; font-weight: 700; color: var(--accent);
       line-height: 1; min-width: 56px;
     }
@@ -143,7 +164,7 @@
     .step-body h3 { margin-top: 0; color: var(--accent); }
     .step-card:nth-child(even) .step-body h3 { color: var(--accent2); }
     .step-body .meta {
-      font-family: 'Consolas', 'Courier New', monospace; font-size: 0.78rem;
+      font-family: 'GeistMono', monospace; font-size: 0.78rem;
       color: var(--muted); margin-bottom: 0.5rem;
     }
     .step-body p { font-size: 1rem; }
@@ -156,7 +177,7 @@
       font-size: 1.05rem; line-height: 2; color: var(--ink);
     }
     .script-block .label {
-      font-family: 'Consolas', 'Courier New', monospace; font-size: 0.75rem;
+      font-family: 'GeistMono', monospace; font-size: 0.75rem;
       color: var(--accent2); letter-spacing: 0.1em; margin-bottom: 0.8rem; font-weight: 700;
     }
 
@@ -227,7 +248,7 @@
     /* Footer */
     footer { padding: 2.5rem 0; text-align: center; background: var(--bg2); }
     footer .label {
-      font-family: 'Consolas', 'Courier New', monospace; font-size: 0.75rem;
+      font-family: 'GeistMono', monospace; font-size: 0.75rem;
       color: var(--muted); letter-spacing: 0.15em; margin-bottom: 0.8rem;
     }
     footer .info { font-size: 0.9rem; color: var(--muted); line-height: 1.8; }
@@ -522,8 +543,8 @@ flowchart LR
   </div>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<script src="./_shared/js/mermaid.min.js"></script>
+<script src="./_shared/js/echarts.min.js"></script>
 <script>mermaid.initialize({ startOnLoad: true, theme: 'base', securityLevel: 'loose' });</script>
 <script src="assets/charts.js"></script>
 
